@@ -1,68 +1,73 @@
-import type { Metadata, Viewport } from 'next'
-import { Inter as FontSans } from 'next/font/google'
+import type { Metadata, Viewport } from 'next';
+import { Instrument_Serif, Inter } from 'next/font/google';
 
-import { Analytics } from '@vercel/analytics/next'
+import { Analytics } from '@vercel/analytics/next';
 
-import { createClient } from '@/lib/supabase/server'
-import { cn } from '@/lib/utils'
+import { createClient } from '@/lib/supabase/server';
+import { cn } from '@/lib/utils';
 
-import { SidebarProvider } from '@/components/ui/sidebar'
-import { Toaster } from '@/components/ui/sonner'
+import { SidebarProvider } from '@/components/ui/sidebar';
+import { Toaster } from '@/components/ui/sonner';
 
-import AppSidebar from '@/components/app-sidebar'
-import ArtifactRoot from '@/components/artifact/artifact-root'
-import Header from '@/components/header'
-import { ThemeProvider } from '@/components/theme-provider'
+import AppSidebar from '@/components/app-sidebar';
+import ArtifactRoot from '@/components/artifact/artifact-root';
+import Header from '@/components/header';
+import { ThemeProvider } from '@/components/theme-provider';
 
-import './globals.css'
+import './globals.css';
 
-const fontSans = FontSans({
+const fontSans = Inter({
   subsets: ['latin'],
-  variable: '--font-sans'
-})
+  variable: '--font-sans',
+});
 
-const title = 'Morphic'
-const description =
-  'A fully open-source AI-powered answer engine with a generative UI.'
+const fontSerif = Instrument_Serif({
+  subsets: ['latin'],
+  weight: '400',
+  style: ['normal', 'italic'],
+  variable: '--font-serif',
+});
+
+const title = 'centrAL Chat';
+const description = 'A fully open-source AI-powered answer engine with a generative UI.';
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://morphic.sh'),
+  metadataBase: new URL('https://chat.studyatcentral.com'),
   title,
   description,
   openGraph: {
     title,
-    description
+    description,
   },
   twitter: {
     title,
     description,
     card: 'summary_large_image',
-    creator: '@miiura'
-  }
-}
+  },
+};
 
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
   minimumScale: 1,
-  maximumScale: 1
-}
+  maximumScale: 1,
+};
 
 export default async function RootLayout({
-  children
+  children,
 }: Readonly<{
-  children: React.ReactNode
+  children: React.ReactNode;
 }>) {
-  let user = null
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  let user = null;
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
   if (supabaseUrl && supabaseAnonKey) {
-    const supabase = await createClient()
+    const supabase = await createClient();
     const {
-      data: { user: supabaseUser }
-    } = await supabase.auth.getUser()
-    user = supabaseUser
+      data: { user: supabaseUser },
+    } = await supabase.auth.getUser();
+    user = supabaseUser;
   }
 
   return (
@@ -70,7 +75,8 @@ export default async function RootLayout({
       <body
         className={cn(
           'min-h-screen flex flex-col font-sans antialiased',
-          fontSans.variable
+          fontSans.variable,
+          fontSerif.variable
         )}
       >
         <ThemeProvider
@@ -93,5 +99,5 @@ export default async function RootLayout({
         </ThemeProvider>
       </body>
     </html>
-  )
+  );
 }

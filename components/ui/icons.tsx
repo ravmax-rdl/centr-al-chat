@@ -1,22 +1,57 @@
-'use client'
+'use client';
 
-import { cn } from '@/lib/utils'
+import { useEffect, useState } from 'react';
+import Image from 'next/image';
+import { useTheme } from 'next-themes';
 
-function IconLogo({ className, ...props }: React.ComponentProps<'svg'>) {
+import { cn } from '@/lib/utils';
+
+function IconLogo({ className, ...props }: React.ComponentProps<'div'>) {
+  const { theme, resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Determine which logo to show based on theme
+  const currentTheme = theme === 'system' ? resolvedTheme : theme;
+  const logoSrc = currentTheme === 'dark' ? '/logolight.svg' : '/logodark.svg';
+
+  // Return a placeholder during SSR to prevent hydration mismatch
+  if (!mounted) {
+    return <div className={cn('relative h-4 w-4', className)} {...props} />;
+  }
+
   return (
-    <svg
-      fill="currentColor"
-      viewBox="0 0 256 256"
-      role="img"
-      xmlns="http://www.w3.org/2000/svg"
-      className={cn('h-4 w-4', className)}
-      {...props}
-    >
-      <circle cx="128" cy="128" r="128" fill="black"></circle>
-      <circle cx="102" cy="128" r="18" fill="white"></circle>
-      <circle cx="154" cy="128" r="18" fill="white"></circle>
-    </svg>
-  )
+    <div className={cn('relative h-4 w-4', className)} {...props}>
+      <Image src={logoSrc} alt="Logo" fill className="object-contain" />
+    </div>
+  );
 }
 
-export { IconLogo }
+function IconLogoNamed({ className, ...props }: React.ComponentProps<'div'>) {
+  const { theme, resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Determine which named logo to show based on theme
+  const currentTheme = theme === 'system' ? resolvedTheme : theme;
+  const logoSrc = currentTheme === 'dark' ? '/logonamelight.svg' : '/logonamedark.svg';
+
+  // Return a placeholder during SSR to prevent hydration mismatch
+  if (!mounted) {
+    return <div className={cn('relative h-8 w-auto', className)} {...props} />;
+  }
+
+  return (
+    <div className={cn('relative h-8 w-auto', className)} {...props}>
+      <Image src={logoSrc} alt="Logo" fill className="object-contain" />
+    </div>
+  );
+}
+
+export { IconLogo, IconLogoNamed };
