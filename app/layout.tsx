@@ -29,7 +29,7 @@ const fontSerif = Instrument_Serif({
 });
 
 const title = 'centrAL Chat';
-const description = 'A fully open-source AI-powered answer engine with a generative UI.';
+const description = 'A fully open-source AI-powered answer engine focused on Sri Lankan A/Ls.';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://chat.studyatcentral.com'),
@@ -38,11 +38,13 @@ export const metadata: Metadata = {
   openGraph: {
     title,
     description,
+    images: ['/images/banner.webp'],
   },
   twitter: {
     title,
     description,
     card: 'summary_large_image',
+    images: ['/images/banner.webp'],
   },
 };
 
